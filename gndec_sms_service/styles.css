@@ -1,0 +1,233 @@
+BODY				{	background-image:url('images/COCTAIL1.GIF');
+						color: #000000;
+						font-family: Tahoma, sans-serif;
+						font-size: 11px;
+						font-weight: normal;
+					}
+A					{	font-family: Tahoma, sans-serif;
+						font-size: 11px;
+						font-weight: none;
+						color: #053707;
+						text-decoration: none;
+					}
+A.group				{	color: #FFFFFF;
+					}
+A:hover				{	text-decoration: underline;
+					}
+.navMenu			{	font-family: Tahoma, sans-serif;
+						font-size: 11px;
+						font-weight: bold;
+						color: #0088EE;
+						text-align: right;
+						padding-bottom: 3px;
+					}
+.headTitle			{	background-color: #000000;
+						color: #FFFFFF;
+						font-family: Tahoma, sans-serif;
+						font-size: 20px;
+						font-weight: bold;
+						border: 3px solid #000000;
+					}
+.headText			{	background-color: #000000;
+						color: #FFFFFF;
+						font-family: Tahoma, sans-serif;
+						font-size: 11px;
+						font-weight: bold;
+						border: 3px solid #000000;
+					}
+.infoBox			{	font-family: Tahoma, sans-serif;
+						font-size: 11px;
+						font-weight: normal;
+						color: #000000;
+						border: 1px solid #000000;
+					}
+.data				{	font-family: Tahoma, sans-serif;
+						font-size: 11px;
+						font-weight: normal;
+						color: #000000;
+						vertical-align: top; 
+					}
+.update				{	font-family: Tahoma, sans-serif;
+						font-size: 9px;
+						font-weight: normal;
+						color: #000000;
+					}
+.listEntry			{	font-family: Tahoma, sans-serif;
+
+
+						font-size: 11px;
+						font-weight: normal;
+						color: #000000;
+						border-bottom: 1px solid #AAAAAA;
+						padding-top: 2px;
+						padding-bottom: 2px;
+					}
+.listHeader			{	font-family: Tahoma, sans-serif;
+						font-size: 14pt;
+						font-weight: bold;
+						color: #000000;
+						border-bottom: 1px solid #AAAAAA;
+						padding-top: 10px;
+						padding-bottom: 2px;
+                    }
+.listDivide			{	font-family: Tahoma, sans-serif;
+						font-size: 1px;
+						color: #FFFFFF;
+						border-bottom: 1px solid #AAAAAA;
+					}
+.formMailbox		{	font-family: Tahoma, sans-serif;
+						font-size: 11px;
+						font-weight: normal;
+						color: #000000;
+						width: 250px;
+					}					
+.formTextbox		{	font-family: Tahoma, sans-serif;
+						font-size: 11px;
+						font-weight: normal;
+						color: #000000;
+						width: 150px;
+					}
+.formTextarea		{	font-family: Tahoma, sans-serif;
+						font-size: 11px;
+						font-weight: normal;
+						color: #000000;
+						overflow: auto;
+					}
+.formSelect			{	font-family: Tahoma, sans-serif;
+						font-size: 11px;
+						font-weight: normal;
+						color: #000000;
+					}
+.formButton			{	font-family: Tahoma, sans-serif;
+						font-size: 11px;
+						font-weight: bold;
+						color: #0066CC;
+						background: #FFFFFF;
+						border: 1px;
+						border-color: #CCCCCC;
+						text-decoration: none;
+					}
+.formButton:hover	{	background: #EEEEEE;
+					}
+
+.error				{	background-color: #DDDDDD;
+						border: 1px solid #333333;
+						margin-left: 20px;
+						padding: 10px;
+						width: 400px;
+						font-family: Tahoma, sans-serif;
+						font-size: 11px;
+					}
+					
+#history
+{
+width:100%;
+border: 1px solid black;
+border-collapse:collapse;
+table-layout:auto;
+}
+
+#history th
+{
+background-color:black;
+color:white;
+border:1px solid black;
+}
+
+#history td
+{
+text-align:left;
+border:1px solid black;
+}
+
+.ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
+.ui-timepicker-div dl{ text-align: left; }
+.ui-timepicker-div dl dt{ height: 25px; }
+.ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+
+#credit li
+{
+color:black;
+}
+
+#credit th
+{
+background-color:#317D3B;
+color:white;
+}
+
+#credit
+{
+border-collapse:collapse;
+border-color:#317D3B;
+}
+
+#credit td
+{
+background-color:#DAE8DC;
+border-color:#317D3B;
+
+}
+#credit a
+{
+font-size:1em;
+}
+
+.suggest_link {
+				background-color: white;
+				color:#0a3614;
+				padding: 2px 6px 2px 6px;
+			}
+			.suggest_link_over {
+				background-color: #558051;
+				padding: 2px 6px 2px 6px;
+			}
+			#suggestions {
+				position: absolute; 
+				color:#0a3614;
+				background-color:red; 
+				text-align: left; 
+				border: 2px solid #558051;	
+				border-collapse:collapse;		
+			}		
+
+#send_sms_bottons 
+{
+	margin-right:320px;
+}
+
+#error {
+color:red;
+font-size:12px;
+}
+
+#status_table table {
+border:2px solid black;
+border-collapse:collapse;
+}
+
+#status_table td {
+border: 2px solid black;
+border-collapse:collapse;
+}
+
+#status_table th {
+border: 2px solid black;
+border-collapse:collapse;
+background-color:#1c9538;
+}
+
+.ok p{
+background-color:green;
+}
+
+#title_img {
+margin-top:49px;
+margin-left:368px;
+}
+
+.warning_r
+{
+color: red;
+}
