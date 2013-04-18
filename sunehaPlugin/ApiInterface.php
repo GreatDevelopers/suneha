@@ -1,9 +1,9 @@
 <?php
 /* 
-    Plugin Name: api Interface
-    Plugin URI: http://www.navdeepbagga.com 
-    Description: Interface of API
-    Author: navdeep bagga
+    Plugin Name: Suneha
+    Plugin URI: http://github.com/GreatDevelopers/suneha/tree/master/sunehaPlugin
+    Description: Description: Lets your wordpress website connect to suneha interface. 
+    Author: Navdeep Bagga
     Version: 1.0 
     Author URI: http://www.navdeepbagga.com
  */   
