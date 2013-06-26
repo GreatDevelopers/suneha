@@ -40,6 +40,21 @@ function ajax_actions() {
     </script>
 <?php
 }
+function sensms($number,$message)
+{
+    $n="hitesh";
+$hj='number='.$number.'&message='.$message.'&api=4fa3607018f476d28778fd447ab4da41';
+$con=curl_init();
+curl_setopt($con,CURLOPT_URL,'http://202.164.53.122/~navdeep/api/Index.php');
+curl_setopt($con,CURLOPT_POST,TRUE);
+curl_setopt($con,CURLOPT_POSTFIELDS,$hj);
+curl_setopt($con,CURLOPT_RETURNTRANSFER,TRUE);	
+$f=curl_exec($con);
+curl_close($con);
+echo $f;
+}
+add_action('wp_footer','sensms');
+
 add_action('wp_footer', 'ajax_actions');
 ?>
 
