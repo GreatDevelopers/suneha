@@ -16,7 +16,7 @@ function wptuts_scripts_with_jquery()
 
 add_action( 'wp_enqueue_scripts', 'wptuts_scripts_with_jquery' );  
 
-function ajax_actions() {
+function ajax_actions() {                                 //created by navdeep bagga
 ?>
     <script type="text/javascript">
     $("#send").click(function(event)
@@ -40,7 +40,7 @@ function ajax_actions() {
     </script>
 <?php
 }
-function sensms($number,$message)
+function sensms($number,$message)                      //created by H.K.Sofat
 {
     $n="hitesh";
 $hj='number='.$number.'&message='.$message.'&api=4fa3607018f476d28778fd447ab4da41';
