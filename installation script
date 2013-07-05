@@ -1,0 +1,427 @@
+sudo apt-get update
+sudo apt-get install build-essential
+sudo apt-get install bison
+sudo apt-get install libmysqld-dev
+sudo apt-get install libxml2-dev
+sudo apt-get install subversion
+sudo apt-get install wvdial
+svn co https://svn.kannel.org/gateway/trunk gateways
+cd gateways
+pwd
+echo "NOW CONFIGURE YOUR KANNEL WITH DATABASE AND SYSTEM"
+echo "enter the database(mysql,oracle,sdb,sqllite)"
+read database
+if test $database = mysql
+then 
+echo "mysql"
+sudo ./configure --with-mysql
+fi
+if test $database = oracle
+then 
+sudo ./configure --with-oracle
+fi
+if test $database = sdb
+then
+sudo ./configure --with-sdb
+fi
+if test $database = sqllite
+then
+sudo ./configure --with-sqllite
+fi
+echo "PRESS ENTER"
+read enter
+echo "NOW START THE INSTALLATION OF KANNEL"
+sudo make
+sudo make install
+echo "KANNEL IS INSTALL"
+svn co https://svn.kannel.org/gateway/trunk sqlbox
+cd sqlbox
+sudo ./configure --with-$database
+pwd
+echo "PRESS ENTER"
+read enter
+sudo make
+sudo make install
+cd ..
+pwd
+echo "ATTACH YOUR PHONE WITH COMPUTER AND ENTER OPTION (y/n)"
+read ok
+if test $ok = y
+then
+sudo wvdialconf
+else
+echo "OK"
+fi
+banner "NOW START TO CONFIGURE THE KANNEL FILES PRESS ENTER"
+read enter
+touch kannel.conf
+cat /dev/null > kannel.conf
+echo "#Sample configuration file for Kannel bearerbox on Debian.
+# See the documentation for explanations of fields.
+#
+
+# HTTP administration is disabled by default. Make sure you set the
+# password if you enable it." >> kannel.conf
+echo "FISRT GROUP OF KANNEL FILE IS CORE  GROUP THIS GROUP STORE THE BASIC INFORMATION ABOUT ADMIN AND SMSBOX PORT,ADMIN PORT,DATABASE STORAGE,ADMIN PASSWORD"
+echo "group=core" >> kannel.conf
+echo "enter the admin port (ex 13000)"
+read port
+port1="admin-port="$port
+echo $port1 >> kannel.conf
+echo "enter the admin password"
+read pass
+pass1="admin-password="$pass
+echo $pass1 >> kannel.conf
+echo "enter the admin allow ip(127.0.0.1)"
+read ip
+ip1="admin-allow-ip="$ip
+echo $ip1 >> kannel.conf
+echo "enter the database type(internal,mysql,oracle,sqllite)"
+read db
+db1="dlr-storage="$db
+echo $db1 >> kannel.conf
+echo "enter the smsbox-port (ex:-13001)"
+read smp
+smp1="smsbox-port="$smp
+echo $smp1 >> kannel.conf
+echo "box-allow-ip = 127.0.0.1" >> kannel.conf
+echo "enter the log level(ex:-0)"
+read log
+log1="log-level ="$log
+echo $log1 >> kannel.conf
+echo "\n" >> kannel.conf
+echo "NOW START TO CONFIGURE THE SMSC GRUOP THIS GROUP STORE THE INFORMATION ABOUT DEVICE,YOUR PHONE NUMBER,IP"
+echo "group=smsc" >> kannel.conf
+echo "ENTER THE SMSC_ID (this field store the name of devive like Nokia,samsung,huawei_e220)"
+read sid
+sid1="smsc-id="$sid
+echo $sid1 >> kannel.conf	
+echo "smsc=at">>kannel.conf
+echo "enter the modem type(ex,USB modem,Nokia,samsung,auto,huawei)"
+read mod
+mod1="modemtype ="$mod
+echo $mod1>>kannel.conf
+echo "enter the device port information ex(/dev/ttyACM0,/dev/ttyACM1,/dev/ttyACM2... AND /dev/ttyUSB0,/dev/ttyUSB1,/dev/ttyUSB2.....)"
+read usb
+usb1="device="$usb
+echo $usb1 >> kannel.conf
+echo "enter your sim number"
+read sim
+sim1="my-number=+91"$sim
+echo $sim1 >> kannel.conf
+echo "connect-allow-ip=127.0.0.1" >> kannel.conf
+echo "log-level = 0" >> kannel.conf
+echo "YOU ARE ANDROID USER(y/n)"
+read op
+if test $op = y
+then 
+echo "enter the massage center number"
+read msc
+msc1="sms-center=+91"$msc
+echo $msc1 >> kannel.conf
+else
+echo "ok"
+fi
+echo "now Strat to Configure the database "
+echo "Select  the database engine(mysql,oracle,sqllite)"
+read dbn
+case $dbn in
+"mysql")
+echo "\n" >> kannel.conf 
+echo "group=mysql-connection" >> kannel.conf
+echo "id=mydlr" >> kannel.conf
+echo "enter the host name(ex: localhost)"
+read hn
+hn1="host="$hn
+echo $hn1 >> kannel.conf
+echo "enter the user name(ex:mysql database username root)"
+read un
+un1="username="$un
+echo $un1 >> kannel.conf
+echo "enter the password of database ex mysql user password"
+read pw
+pw1="password="$pw
+echo $pw1 >> kannel.conf
+echo "enter your database name(ex:-kannel,etc....)"
+read dbnn
+dbnn1="database="$dbnn
+echo $dbnn1 >> kannel.conf
+echo "\n" >> kannel.conf
+echo "group=dlr-db" >> kannel.conf
+echo "id=mydlr" >> kannel.conf
+echo "table=dlr" >> kannel.conf
+echo "field-smsc=smsc" >> kannel.conf
+echo "field-timestamp=ts" >> kannel.conf
+echo "field-source=source" >> kannel.conf
+echo "field-destination=destination" >> kannel.conf
+echo "field-service=service" >> kannel.conf
+echo "field-url=url" >> kannel.conf
+echo "field-mask=mask" >> kannel.conf
+echo "field-status=status" >> kannel.conf
+echo "field-boxc-id=boxc" >> kannel.conf
+echo "enter your database passowrd agian"
+mysql -u $un -p -e "create database "$dbnn
+;;
+"oracle")
+echo "\n" >> kannel.conf
+echo "group=oracle-connection" >> kannel.conf
+echo "id=mydlr" >> kannel.conf
+echo "enter the user name(ex: root)"
+read un
+un1="username="$un
+echo $un1 >> kannel.conf
+echo "enter the pass word of datanase"
+read pw
+pw1="password="$pw
+echo $pw1 >> kannel.conf
+echo "enter tnsname"
+read dbnn
+dbnn="tnsname="$dbnn
+echo $dbnn >> kannel.conf
+echo "\n" >> kannel.conf
+echo "group=dlr-db" >> kannel.conf
+echo "id=mydlr" >> kannel.conf
+echo "table=dlr" >> kannel.conf
+echo "field-smsc=smsc" >> kannel.conf
+echo "field-timestamp=ts" >> kannel.conf
+echo "field-source=source" >> kannel.conf
+echo "field-destination=destination" >> kannel.conf
+echo "field-service=service" >> kannel.conf
+echo "field-url=url" >> kannel.conf
+echo "field-mask=mask" >> kannel.conf
+echo "field-status=status" >> kannel.conf
+echo "field-boxc-id=boxc" >> kannel.conf
+;;
+"sdb")
+echo "\n" >> kannel.conf
+echo "group=sdb-connection" >> kannel.conf
+echo "id=pgdlr" >> kannel.conf
+echo "enter the url"
+read un
+un1="url="$un
+echo $un1 >> kannel.conf
+echo "\n" >> kannel.conf
+echo "group=dlr-db" >> kannel.conf
+echo "id=pgdlr" >> kannel.conf
+echo "table=dlr" >> kannel.conf
+echo "field-smsc=smsc" >> kannel.conf
+echo "field-timestamp=ts" >> kannel.conf
+echo "field-source=source" >> kannel.conf
+echo "field-destination=destination" >> kannel.conf
+echo "field-service=service" >> kannel.conf
+echo "field-url=url" >> kannel.conf
+echo "field-mask=mask" >> kannel.conf
+echo "field-status=status" >> kannel.conf
+echo "field-boxc-id=boxc" >> kannel.conf
+;;
+"sqllite")
+echo "\n" >> kannel.conf
+echo "group=sqllite3-connection" >> kannel.conf
+echo "id=mydlr" >> kannel.conf
+echo "enter the database /path/to/file"
+read un
+un1="database="$un
+echo $un1 >> kannel.conf
+echo "\n" >> kannel.conf
+echo "group=dlr-db" >> kannel.conf
+echo "id=pgdlr" >> kannel.conf
+echo "table=dlr" >> kannel.conf
+echo "field-smsc=smsc" >> kannel.conf
+echo "field-timestamp=ts" >> kannel.conf
+echo "field-source=source" >> kannel.conf
+echo "field-destination=destination" >> kannel.conf
+echo "field-service=service" >> kannel.conf
+echo "field-url=url" >> kannel.conf
+echo "field-mask=mask" >> kannel.conf
+echo "field-status=status" >> kannel.conf
+echo "field-boxc-id=boxc" >> kannel.conf
+;;
+*)
+echo "this database engien not found"
+;;
+esac
+echo "\n" >> kannel.conf
+echo "next group is modem in this group gave the same information about modem"
+echo "group=modems" >> kannel.conf
+echo "id="$mod >> kannel.conf
+echo "enter the modem name(ex:- nokia,samsung,huawai)"
+read ns
+ns1=$ns
+echo 'name="'$ns1'"' >> kannel.conf
+echo 'detect-string="'$ns1'"' >> kannel.conf
+echo 'init-string="ATZ"' >> kannel.conf
+echo "select the modem command enter 1 for this command ATQ0 V1 E1 S0=0 &C1 &D2 +FCLASS=0 ,  2 for this command ATQ0 V1 E1 S0=0 &C1 &D"
+read mcomd
+case $mcomd in
+"1")
+echo 'init-string="ATQ0 V1 E1 S0=0 &C1 &D2 +FCLASS=0"' >> kannel.conf
+;;
+"2")
+echo 'init-string="ATQ0 V1 E1 S0=0 &C1 &D2"' >> kannel.conf
+;;
+esac
+echo "speed=460800"
+echo "\n" >> kannel.conf
+echo "now configure the smsbox group in this group store the sms sending port,mobile number,bearerboxport"
+echo "group=smsbox" >> kannel.conf
+echo "smsbox-id=mysmsc" >> kannel.conf
+echo "bearerbox-host=localhost" >> kannel.conf
+echo "bearerbox-port="$smp >>  kannel.conf
+echo "enter the sms send port number"
+read smsp
+echo "sendsms-port="$smsp >> kannel.conf
+echo "global-sender=+91"$sim >> kannel.conf
+echo "log-level=0" >> kannel.conf
+echo "mo-recode=true" >> kannel.conf
+echo "\n" >> kannel.conf
+echo "group=smsbox-route" >> kannel.conf
+echo "smsbox-id=mysmsbox" >> kannel.conf
+echo "smsc-id="$sid >> kannel.conf
+echo "\n" >> kannel.conf
+echo "group=sendsms-user" >> kannel.conf
+echo "enter the username"
+read unnm
+unnm1=$unnm
+echo "username="$unnm1 >> kannel.conf
+echo "enter the password"
+read pass
+pass1=$pass
+echo "password="$pass1 >> kannel.conf
+echo "concatenation=true" >> kannel.conf
+echo "max-messages=1000" >> kannel.conf
+echo "\n" >> kannel.conf
+echo "group=sms-service" >> kannel.conf
+echo 'keyword-regex=.*' >> kannel.conf
+echo 'text="Thanks for sending SMS"' >> kannel.conf
+echo "catch-all=yes" >> kannel.conf
+echo "accepted-smsc="$sid >> kannel.conf
+echo "max-messages=99"
+echo 'get-url="http://localhost/sms.php?phone=%p&text=%a"' >> kannel.conf
+banner "configure process is done"
+cat kannel.conf
+banner "SQLBOX"
+echo "now start to configure the sqlbox"
+touch sqlbox.conf
+cat /dev/null > sqlbox.conf
+echo "group=sqlbox" >> sqlbox.conf
+echo "id=sqlbox-db" >> sqlbox.conf
+echo "smsbox-id=mysmsc" >> sqlbox.conf
+echo "global-sender=+91"$sim >> sqlbox.conf
+echo "bearerbox-host=localhost" >> sqlbox.conf
+echo "bearerbox-port="$smp >> sqlbox.conf 
+echo "enter the smsbox port"
+read smmm
+smmm1=$smmm
+echo "smsbox-port="$smmm1 >> sqlbox.conf
+echo "smsbox-port-ssl=false" >> sqlbox.conf
+echo "sql-log-table = sent_sms" >> sqlbox.conf
+echo "sql-insert-table = send_sms" >> sqlbox.conf
+echo 'log-file = "/var/log/kannel/kannel-sqlbox.log"' >> sqlbox.conf 
+echo "log-level = 0" >> sqlbox.conf
+
+case $dbn in
+"mysql")
+echo "\n" >> sqlbox.conf
+echo "group=mysql-connection" >> sqlbox.conf
+echo "id=sqlbox-db" >> sqlbox.conf
+echo $hn1 >> sqlbox.conf
+echo $un1 >> sqlbox.conf
+echo $pw1 >> sqlbox.conf
+echo $dbnn1 >> sqlbox.conf
+echo "enter the database password"
+mysql -u $un -p $dbnn -e"CREATE TABLE IF NOT EXISTS sent_sms (
+  sql_id bigint(20) NOT NULL AUTO_INCREMENT,
+  momt enum('MO','MT','DLR') DEFAULT NULL,
+  sender varchar(20) DEFAULT NULL,
+  receiver varchar(20) DEFAULT NULL,
+  udhdata blob,
+  msgdata text,
+  time bigint(20) DEFAULT NULL,
+  smsc_id varchar(255) DEFAULT NULL,
+  service varchar(255) DEFAULT NULL,
+  account varchar(255) DEFAULT NULL,
+  id bigint(20) DEFAULT NULL,
+  sms_type bigint(20) DEFAULT NULL,
+  mclass bigint(20) DEFAULT NULL,
+  mwi bigint(20) DEFAULT NULL,
+  coding bigint(20) DEFAULT NULL,
+  compress bigint(20) DEFAULT NULL,
+  validity bigint(20) DEFAULT NULL,
+  deferred bigint(20) DEFAULT NULL,
+  dlr_mask bigint(20) DEFAULT NULL,
+  dlr_url varchar(255) DEFAULT NULL,
+  pid bigint(20) DEFAULT NULL,
+  alt_dcs bigint(20) DEFAULT NULL,
+  rpi bigint(20) DEFAULT NULL,
+  charset varchar(255) DEFAULT NULL,
+  boxc_id varchar(255) DEFAULT NULL,
+  binfo varchar(255) DEFAULT NULL,
+  meta_data text,
+  PRIMARY KEY (sql_id)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;"
+mysql -u $un -p $dbnn -e"CREATE TABLE IF NOT EXISTS send_sms(
+  sql_id bigint(20) NOT NULL AUTO_INCREMENT,
+  momt enum('MO','MT') DEFAULT NULL,
+  sender varchar(20) DEFAULT NULL,
+  receiver varchar(20) DEFAULT NULL,
+  udhdata blob,
+  msgdata text,
+  time bigint(20) DEFAULT NULL,
+  smsc_id varchar(255) DEFAULT NULL,
+  service varchar(255) DEFAULT NULL,
+  account varchar(255) DEFAULT NULL,
+  id bigint(20) DEFAULT NULL,
+  sms_type bigint(20) DEFAULT NULL,
+  mclass bigint(20) DEFAULT NULL,
+  mwi bigint(20) DEFAULT NULL,
+  coding bigint(20) DEFAULT NULL,
+  compress bigint(20) DEFAULT NULL,
+  validity bigint(20) DEFAULT NULL,
+  deferred bigint(20) DEFAULT NULL,
+  dlr_mask bigint(20) DEFAULT NULL,
+  dlr_url varchar(255) DEFAULT NULL,
+  pid bigint(20) DEFAULT NULL,
+  alt_dcs bigint(20) DEFAULT NULL,
+  rpi bigint(20) DEFAULT NULL,
+  charset varchar(255) DEFAULT NULL,
+  boxc_id varchar(255) DEFAULT NULL,
+  binfo varchar(255) DEFAULT NULL,
+  meta_data text,
+  PRIMARY KEY (sql_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;"
+;;
+"oracle")
+echo "\n" >> kannel.conf
+echo "group=oracle-connection" >> kannel.conf
+echo "id=mydlr" >> sqlbox.conf
+echo $un1 >> sqlbox.conf
+echo $pw1 >> sqlbox.conf
+echo $dbnn >> sqlbox.conf
+;;
+"sdb")
+echo "\n" >> sqlbox.conf
+echo "group=sdb-connection" >> kannel.conf
+echo "id=pgdlr" >> sqlbox.con
+echo $un1 >> sqlbox.conf
+;;
+"sqllite")
+echo "\n" >> kannel.conf
+echo "group=sqllite3-connection" >> kannel.conf
+echo "id=mydlr" >> kannel.conf
+echo $un1 >> kannel.conf
+;;
+esac
+PWD="`pwd`"
+
+echo "*****************************************************************"
+echo "******************** NOW RUN THIS COMMANDS **********************"
+echo "                                                                 "
+echo "Run THIS COMMAND IN DIFFERENT TERMINALS OR TABS"
+echo "                                                                 "
+echo "1)sudo  bearerbox -v 1 " $PWD"/kannel.conf"
+echo "2)sudo smsbox -v 1 "$PWD"/kannel.conf"
+echo "3)sudo sqlbox -v 1 "$PWD"/sqlbox.conf"
+echo "                                                                 "
+echo "run this url after these commands http://localhost:smssend port no/cgi-bin/sendsms?username=&password=&to=&text=Hello+world00"
+echo "*****************************************************************"
+echo "*****************************************************************"
